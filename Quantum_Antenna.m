@@ -2,7 +2,7 @@ function Quantum_Antenna()
 
 clear; close all; clc;
 
-%% 1. Paths %%
+%% 1. Paths 
 scriptDir = fileparts(mfilename('fullpath'));
 dataDir   = fullfile(scriptDir, '..', 'data');
 if ~exist(dataDir, 'dir'), mkdir(dataDir); end
