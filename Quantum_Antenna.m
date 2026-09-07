@@ -18,7 +18,7 @@ dip  = e*z12;                % dipole matrix element d = e*z12 [C.m]
 eps0 = 8.8541878128e-12;     % vacuum permittivity [F/m]
 c    = 2.99792458e8;         % speed of light [m/s]
 hbar = 1.054571817e-34;      % reduced Planck constant [J.s]
-Dl   = 0;                    % de tuning (resonant drive) [rad/s]
+Dl   = 0;                    % detuning (resonant drive) [rad/s]
 
 fprintf('== Quantum Antenna Element Simulation ==\n');
 fprintf('f0 = %.2f THz, G/2pi = %.1f GHz, d = %.3e C.m\n', ...
@@ -123,7 +123,7 @@ fprintf(fid,'theta_deg,P_Om0p71G,P_Om3G,P_Om8G\n');
 fprintf(fid,'%.1f,%.6f,%.6f,%.6f\n',[th, pat]');
 fclose(fid);
 
-%% ---------------------------------------------------- 3. Summary numbers
+%% 4.  Summary numbers
 Pq_at_10G = interp1(Om_ratio, Pq, 10, 'linear');
 Pc_at_10G = interp1(Om_ratio, Pc, 10, 'linear');
 fid = fopen(fullfile(dataDir,'summary.txt'),'w');
@@ -138,7 +138,7 @@ fprintf(fid,'Radiative rate from d: G_rad/2pi = %.2f Hz -> antenna coupling is e
 fclose(fid);
 type(fullfile(dataDir,'summary.txt'));
 
-%% ---------------------------------- 4. Figures (MATLAB; skipped headless)
+%% 5. Figures 
 MAKE_FIGS = true;
 if MAKE_FIGS
   try
@@ -150,6 +150,7 @@ if MAKE_FIGS
     xlabel('Time (ps)'); ylabel('\rho_{ee}'); legend('Om = G','Om = 4G');
     grid on; title('(a) Rabi oscillations of the QD emitter');
     print(gcf, fullfile(figDir,'fig_a_rabi.png'), '-dpng', '-r200');
+    
     % (b) Power vs drive
     figure('Color','w'); plot(Om_ratio, Pq, 'LineWidth', 2.5); hold on;
     plot(Om_ratio, Pc, '--', 'LineWidth', 2);
@@ -157,6 +158,7 @@ if MAKE_FIGS
     legend('Quantum (this work)','Classical dipole','Location','northwest');
     grid on; title('(b) Radiated power vs drive strength');
     print(gcf, fullfile(figDir,'fig_b_power.png'), '-dpng', '-r200');
+    
     % (c) Spectrum
     figure('Color','w'); plot(f_ax/1e9, S_norm(:,1), 'LineWidth', 2); hold on;
     plot(f_ax/1e9, S_norm(:,2), 'LineWidth', 2);
@@ -164,6 +166,7 @@ if MAKE_FIGS
     legend('\Omega = \Gamma','\Omega = 5\Gamma'); grid on;
     title('(c) Emission spectrum (Mollow triplet)');
     print(gcf, fullfile(figDir,'fig_c_spectrum.png'), '-dpng', '-r200');
+    
     % (d) Pattern
     figure('Color','w'); polarplot(th*pi/180, pat(:,1), 'LineWidth', 2); hold on;
     polarplot(th*pi/180, pat(:,2), 'LineWidth', 2);
@@ -172,7 +175,8 @@ if MAKE_FIGS
     legend('\Omega = 0.71\Gamma','\Omega = 3\Gamma','\Omega = 8\Gamma');
     print(gcf, fullfile(figDir,'fig_d_pattern.png'), '-dpng', '-r200');
     disp('Figures written to ../figures');
-  catch err
+    
+catch err
     fprintf(['Graphics unavailable in this environment (%s).\n' ...
              'Data exported to ../data - run this file in MATLAB to plot.\n'], ...
              err.message);
